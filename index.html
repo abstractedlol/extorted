@@ -24,7 +24,7 @@
         
         body { 
             background-color: var(--bg-outer); 
-            background-image: radial-gradient(#1a1a24 1px, transparent 1px);
+            background-image: radial-gradient(#181922 1px, transparent 1px);
             background-size: 24px 24px;
             color: var(--text-main); 
             height: 100vh; 
@@ -34,17 +34,103 @@
             gap: 12px;
         }
 
-        /* Auth Modal */
-        #auth-modal { position: fixed; inset: 0; background: rgba(10, 11, 14, 0.95); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(10px); }
-        .auth-card { background: var(--sidebar-bg); border: 1px solid var(--border); border-radius: 16px; width: 340px; padding: 28px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); }
-        .auth-card h2 { color: var(--accent-purple); font-size: 22px; font-weight: 700; text-align: center; }
-        .auth-card input { background: var(--search-bg); border: 1px solid var(--border); border-radius: 10px; color: #fff; padding: 12px; font-size: 14px; outline: none; }
-        .auth-card input:focus { border-color: var(--accent-purple); }
-        .auth-btns { display: flex; gap: 10px; }
-        .auth-btns button { flex: 1; padding: 11px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; }
-        .btn-purple { background: var(--accent-purple); color: #fff; }
-        .btn-gray { background: #2a2b36; color: #fff; }
-        #auth-msg { font-size: 12px; color: #ff5e5e; text-align: center; min-height: 14px; }
+        /* High-End Telegram Dark Auth Modal */
+        #auth-modal { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(10, 11, 14, 0.94); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000; 
+            backdrop-filter: blur(16px); 
+        }
+
+        .auth-card { 
+            background: #17181f; 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 20px; 
+            width: 360px; 
+            padding: 36px 30px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; 
+            box-shadow: 0 16px 48px rgba(0,0,0,0.7); 
+            position: relative;
+        }
+
+        .auth-logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            margin: 0 auto 4px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(135, 116, 225, 0.35);
+        }
+        .auth-logo svg { width: 32px; height: 32px; fill: #fff; }
+
+        .auth-card h2 { 
+            color: #fff; 
+            font-size: 20px; 
+            font-weight: 700; 
+            text-align: center; 
+            letter-spacing: 0.5px;
+        }
+        .auth-card p {
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+            margin-top: -8px;
+            margin-bottom: 6px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .auth-card input { 
+            background: #111217; 
+            border: 1px solid #282936; 
+            border-radius: 12px; 
+            color: #fff; 
+            padding: 14px 16px; 
+            font-size: 14px; 
+            outline: none; 
+            transition: all 0.2s;
+        }
+        .auth-card input:focus { 
+            border-color: var(--accent-purple); 
+            box-shadow: 0 0 0 2px rgba(135, 116, 225, 0.2);
+        }
+
+        .auth-btns { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+        .auth-btns button { 
+            padding: 13px; 
+            border-radius: 12px; 
+            border: none; 
+            font-weight: 600; 
+            cursor: pointer; 
+            font-size: 14px; 
+            transition: all 0.2s;
+        }
+        .btn-purple { 
+            background: var(--accent-purple); 
+            color: #fff; 
+        }
+        .btn-purple:hover { background: #7762d9; transform: translateY(-1px); }
+        .btn-gray { 
+            background: transparent; 
+            color: var(--text-muted); 
+            border: 1px solid #282936 !important;
+        }
+        .btn-gray:hover { color: #fff; border-color: rgba(255,255,255,0.2) !important; }
+
+        #auth-msg { font-size: 12px; color: #ff5e5e; text-align: center; min-height: 16px; font-weight: 500; }
 
         /* Left Floating Sidebar */
         #sidebar {
@@ -60,7 +146,7 @@
         }
 
         .side-header {
-            padding: 12px 14px 8px 14px;
+            padding: 14px 14px 10px 14px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -99,29 +185,23 @@
             width: 100%;
         }
 
-        /* Notice Banner */
-        .notice-banner {
-            margin: 6px 12px 10px 12px;
-            background: #252631;
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-        }
-        .notice-banner h5 { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-        .notice-banner p { color: var(--text-muted); font-size: 11px; }
-        .notice-close { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; }
-
         /* Friends / Chat List */
         #chat-list {
             flex: 1;
             overflow-y: auto;
-            padding: 0 8px 80px 8px;
+            padding: 6px 8px 80px 8px;
             display: flex;
             flex-direction: column;
             gap: 2px;
+        }
+
+        #no-friends-notice {
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+            margin-top: 60px;
+            line-height: 1.5;
+            padding: 0 20px;
         }
 
         .chat-item {
@@ -150,6 +230,7 @@
             font-size: 16px;
             position: relative;
             flex-shrink: 0;
+            text-transform: uppercase;
         }
         .avatar-dot {
             width: 11px;
@@ -169,16 +250,6 @@
         .chat-time { font-size: 11px; color: var(--text-muted); }
         .chat-bottom-row { display: flex; justify-content: space-between; align-items: center; }
         .chat-snippet { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
-        .chat-badge {
-            background: var(--pill-badge);
-            color: #fff;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 12px;
-            min-width: 18px;
-            text-align: center;
-        }
 
         /* Floating Pencil Button */
         .fab-btn {
@@ -211,7 +282,6 @@
             overflow: hidden;
         }
 
-        /* Top Theme Toggle Lamp */
         .top-lamp {
             position: absolute;
             top: 8px;
@@ -228,7 +298,6 @@
         }
         .top-lamp svg { width: 18px; height: 18px; fill: #fff; }
 
-        /* Empty State */
         #empty-placeholder {
             flex: 1;
             display: flex;
@@ -275,9 +344,9 @@
             background: #272836;
             border: 1px solid var(--border);
             color: #fff;
-            padding: 7px 14px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -290,7 +359,7 @@
 
         /* Video Screen Share Container */
         #video-stage {
-            height: 280px;
+            height: 320px;
             background: #000;
             display: none;
             align-items: center;
@@ -324,7 +393,6 @@
         }
         .out .bubble { background: var(--chat-bubble-out); border-bottom-right-radius: 4px; color: #fff; }
         .in .bubble { background: var(--chat-bubble-in); border-bottom-left-radius: 4px; color: #fff; }
-        .bubble-sender { font-size: 11px; font-weight: 700; color: #bbaeff; margin-bottom: 2px; }
         .bubble-meta { font-size: 10px; color: rgba(255,255,255,0.6); text-align: right; margin-top: 4px; display: flex; justify-content: flex-end; gap: 4px; }
 
         .chat-input-bar {
@@ -365,12 +433,20 @@
     <!-- Auth Window -->
     <div id="auth-modal">
         <div class="auth-card">
-            <h2>extorted</h2>
-            <input id="auth-user" placeholder="Username" autocomplete="off">
-            <input id="auth-pass" type="password" placeholder="Password">
+            <div class="auth-logo">
+                <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M17,13.5C16.5,13.5 16,13.1 16,12.5C16,11.9 16.5,11.5 17,11.5C17.5,11.5 18,11.9 18,12.5C18,13.1 17.5,13.5 17,13.5M12,13.5C11.5,13.5 11,13.1 11,12.5C11,11.9 11.5,11.5 12,11.5C12.5,11.5 13,11.9 13,12.5C13,13.1 12.5,13.5 12,13.5M7,13.5C6.5,13.5 6,13.1 6,12.5C6,11.9 6.5,11.5 7,11.5C7.5,11.5 8,11.9 8,12.5C8,13.1 7.5,13.5 7,13.5Z"/></svg>
+            </div>
+            <h2>Sign in to extorted</h2>
+            <p>Direct chat & crystal-clear screenshare</p>
+            
+            <div class="input-group">
+                <input id="auth-user" placeholder="Username" autocomplete="off">
+                <input id="auth-pass" type="password" placeholder="Password">
+            </div>
+
             <div class="auth-btns">
                 <button class="btn-purple" onclick="auth('login')">Log In</button>
-                <button class="btn-gray" onclick="auth('register')">Register</button>
+                <button class="btn-gray" onclick="auth('register')">Create an account</button>
             </div>
             <div id="auth-msg"></div>
         </div>
@@ -386,31 +462,13 @@
             </button>
             <div class="search-bar">
                 <svg viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
-                <input id="search-input" placeholder="Search">
+                <input id="search-input" placeholder="Search friends...">
             </div>
-        </div>
-
-        <div class="notice-banner" id="banner">
-            <div>
-                <h5>Never miss a message! 🔔</h5>
-                <p>Enable notifications to stay updated.</p>
-            </div>
-            <button class="notice-close" onclick="document.getElementById('banner').style.display='none'">✕</button>
         </div>
 
         <div id="chat-list">
-            <div class="chat-item active" onclick="selectChat('global')">
-                <div class="chat-avatar" style="background: #5d4886;">#</div>
-                <div class="chat-content">
-                    <div class="chat-top-row">
-                        <div class="chat-title">Global Lobby 💎🔴</div>
-                        <div class="chat-time">19:44</div>
-                    </div>
-                    <div class="chat-bottom-row">
-                        <div class="chat-snippet">Welcome to extorted chat...</div>
-                        <div class="chat-badge">1.6K</div>
-                    </div>
-                </div>
+            <div id="no-friends-notice">
+                No chats yet.<br>Click the pencil button to add a friend.
             </div>
         </div>
 
@@ -422,12 +480,11 @@
 
     <!-- Right Workspace Stage -->
     <div id="main-stage">
-        <!-- Bulb Accent Icon in top right -->
         <div class="top-lamp" title="Theme">
             <svg viewBox="0 0 24 24"><path d="M12,2A7,7 0 0,0 5,9C5,11.38 6.19,13.47 8,14.74V17A1,1 0 0,0 9,18H15A1,1 0 0,0 16,17V14.74C17.81,13.47 19,11.38 19,9A7,7 0 0,0 12,2M9,21A1,1 0 0,0 10,22H14A1,1 0 0,0 15,21V20H9V21Z"/></svg>
         </div>
 
-        <!-- Default Empty State -->
+        <!-- Empty Placeholder -->
         <div id="empty-placeholder">
             <div class="select-chat-pill">Select a chat to start messaging</div>
         </div>
@@ -436,15 +493,14 @@
         <div id="active-chat-box">
             <div class="chat-header">
                 <div class="chat-info">
-                    <div class="chat-avatar" id="active-avatar" style="width: 40px; height: 40px; font-size: 14px;">#</div>
+                    <div class="chat-avatar" id="active-avatar" style="width: 40px; height: 40px; font-size: 14px;">?</div>
                     <div>
-                        <h3 id="active-title">Global Lobby</h3>
+                        <h3 id="active-title">User</h3>
                         <p id="active-status">Online</p>
                     </div>
                 </div>
                 <div class="call-controls">
-                    <button id="call-btn" class="tool-btn" onclick="toggleCall()">📞 Call (VC)</button>
-                    <button id="screen-btn" class="tool-btn" onclick="toggleScreen()">🖥️ Share Screen (720p 30+)</button>
+                    <button id="screen-btn" class="tool-btn" onclick="toggleScreen()">🖥️ Screenshare</button>
                 </div>
             </div>
 
@@ -472,7 +528,6 @@
         let myUsername = null;
         let currentTarget = null;
         let peer = null;
-        let localMicStream = null;
         let localScreenStream = null;
 
         const iceConfig = {
@@ -495,7 +550,10 @@
         socket.on('login-success', (data) => {
             myUsername = data.username;
             document.getElementById('auth-modal').style.display = 'none';
-            data.friends.forEach(renderFriend);
+            if (data.friends && data.friends.length > 0) {
+                document.getElementById('no-friends-notice').style.display = 'none';
+                data.friends.forEach(renderFriend);
+            }
         });
 
         function promptAddFriend() {
@@ -506,7 +564,12 @@
         }
 
         socket.on('friend-error', err => alert(err));
-        socket.on('friend-added', renderFriend);
+        
+        socket.on('friend-added', (friend) => {
+            const notice = document.getElementById('no-friends-notice');
+            if (notice) notice.style.display = 'none';
+            renderFriend(friend);
+        });
 
         socket.on('friend-status', ({ username, online }) => {
             const dot = document.getElementById(`dot-${username}`);
@@ -525,7 +588,7 @@
             item.onclick = () => selectChat(friend.username, friend.online);
             item.innerHTML = `
                 <div class="chat-avatar">
-                    ${friend.username[0].toUpperCase()}
+                    ${friend.username[0]}
                     <div id="dot-${friend.username}" class="avatar-dot ${friend.online ? 'online' : 'offline'}"></div>
                 </div>
                 <div class="chat-content">
@@ -535,7 +598,6 @@
                     </div>
                     <div class="chat-bottom-row">
                         <div class="chat-snippet">${friend.online ? 'Online' : 'Offline'}</div>
-                        <div class="chat-badge" style="background: #444955;">1</div>
                     </div>
                 </div>
             `;
@@ -548,18 +610,12 @@
             document.getElementById('active-chat-box').style.display = 'flex';
 
             document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
-            const targetEl = target === 'global' ? document.querySelector('.chat-item') : document.getElementById(`friend-${target}`);
+            const targetEl = document.getElementById(`friend-${target}`);
             if (targetEl) targetEl.classList.add('active');
 
-            if (target === 'global') {
-                document.getElementById('active-avatar').innerText = '#';
-                document.getElementById('active-title').innerText = 'Global Lobby 💎🔴';
-                document.getElementById('active-status').innerText = '1.6K members';
-            } else {
-                document.getElementById('active-avatar').innerText = target[0].toUpperCase();
-                document.getElementById('active-title').innerText = target;
-                document.getElementById('active-status').innerText = isOnline ? 'Online' : 'Offline';
-            }
+            document.getElementById('active-avatar').innerText = target[0].toUpperCase();
+            document.getElementById('active-title').innerText = target;
+            document.getElementById('active-status').innerText = isOnline ? 'Online' : 'Offline';
         }
 
         function sendChat() {
@@ -577,7 +633,6 @@
 
             row.innerHTML = `
                 <div class="bubble">
-                    ${!isMe ? `<div class="bubble-sender">${data.sender}</div>` : ''}
                     <div>${data.text}</div>
                     <div class="bubble-meta">
                         ${data.time} ${isMe ? '✓✓' : ''}
@@ -613,39 +668,8 @@
             return peer;
         }
 
-        async function toggleCall() {
-            if (!currentTarget || currentTarget === 'global') return alert('Select a specific friend to call.');
-            const btn = document.getElementById('call-btn');
-
-            if (!localMicStream) {
-                try {
-                    localMicStream = await navigator.mediaDevices.getUserMedia({
-                        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, sampleRate: 48000 },
-                        video: false
-                    });
-
-                    const p = getPeer(currentTarget);
-                    localMicStream.getTracks().forEach(t => p.addTrack(t, localMicStream));
-
-                    const offer = await p.createOffer();
-                    await p.setLocalDescription(offer);
-                    socket.emit('signal', { targetUser: currentTarget, signal: { type: 'offer', sdp: offer } });
-
-                    btn.classList.add('live');
-                    btn.innerText = '📞 End Call';
-                } catch (e) {
-                    alert('Microphone error: ' + e.message);
-                }
-            } else {
-                localMicStream.getTracks().forEach(t => t.stop());
-                localMicStream = null;
-                btn.classList.remove('live');
-                btn.innerText = '📞 Call (VC)';
-            }
-        }
-
         async function toggleScreen() {
-            if (!currentTarget || currentTarget === 'global') return alert('Select a specific friend to share your screen with.');
+            if (!currentTarget) return alert('Select a friend to share your screen with.');
             const btn = document.getElementById('screen-btn');
             const stage = document.getElementById('video-stage');
 
@@ -671,20 +695,20 @@
                         localScreenStream = null;
                         stage.style.display = 'none';
                         btn.classList.remove('live');
-                        btn.innerText = '🖥️ Share Screen (720p 30+)';
+                        btn.innerText = '🖥️ Screenshare';
                     };
 
                     btn.classList.add('live');
-                    btn.innerText = '🖥️ Stop Share';
+                    btn.innerText = '🖥️ Stop Screenshare';
                 } catch (e) {
-                    console.log('Screen cancelled:', e);
+                    console.log('Screenshare cancelled:', e);
                 }
             } else {
                 localScreenStream.getTracks().forEach(t => t.stop());
                 localScreenStream = null;
                 stage.style.display = 'none';
                 btn.classList.remove('live');
-                btn.innerText = '🖥️ Share Screen (720p 30+)';
+                btn.innerText = '🖥️ Screenshare';
             }
         }
 
