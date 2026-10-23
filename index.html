@@ -6,181 +6,158 @@
     <title>extorted</title>
     <style>
         :root {
-            --bg-base: #0e1117;
-            --bg-sidebar: #161a23;
-            --bg-panel: #1b202c;
-            --bg-chat: #0b0e14;
-            --bubble-in: #1f2533;
-            --bubble-out: #1b4b3e;
-            --accent: #2ecc71;
-            --accent-discord: #5865f2;
-            --accent-telegram: #229ed9;
-            --text-main: #f0f2f5;
-            --text-muted: #8b98a5;
-            --border: #232a3b;
+            --tg-bg: #0e1621;
+            --tg-sidebar: #17212b;
+            --tg-active: #232e3c;
+            --tg-border: #0e1621;
+            --tg-accent: #5288c1;
+            --tg-green: #4fae4e;
+            --tg-bubble-out: #2b5278;
+            --tg-bubble-in: #182533;
+            --tg-text: #f5f5f5;
+            --tg-muted: #7f91a4;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
-        body { background: var(--bg-base); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+        body { background: var(--tg-bg); color: var(--tg-text); height: 100vh; overflow: hidden; display: flex; }
 
-        /* Auth Modal */
-        #auth-modal { position: fixed; inset: 0; background: rgba(8, 10, 15, 0.95); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(12px); }
-        .auth-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 14px; width: 360px; padding: 32px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6); }
-        .auth-card h2 { color: var(--accent); letter-spacing: 2px; text-transform: uppercase; text-align: center; font-size: 20px; font-weight: 800; }
-        .auth-card input { background: var(--bg-base); border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 13px; font-size: 14px; outline: none; transition: border-color 0.2s; }
-        .auth-card input:focus { border-color: var(--accent); }
-        .auth-btns { display: flex; gap: 10px; }
-        .auth-btns button { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 13px; }
-        .btn-login { background: var(--accent); color: #000; }
-        .btn-login:hover { background: #27ae60; }
-        .btn-reg { background: var(--border); color: #fff; }
-        .btn-reg:hover { background: #2f384f; }
-        #auth-msg { font-size: 12px; color: #ff5252; text-align: center; min-height: 14px; }
+        /* Auth Screen */
+        #auth-modal { position: fixed; inset: 0; background: rgba(14, 22, 33, 0.98); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .auth-card { background: var(--tg-sidebar); border: 1px solid #243447; border-radius: 12px; width: 340px; padding: 30px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .auth-card h2 { color: var(--tg-accent); font-size: 20px; font-weight: 700; text-align: center; }
+        .auth-card input { background: var(--tg-bg); border: 1px solid #243447; border-radius: 8px; color: #fff; padding: 12px; font-size: 14px; outline: none; }
+        .auth-card input:focus { border-color: var(--tg-accent); }
+        .auth-btns { display: flex; gap: 8px; }
+        .auth-btns button { flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; }
+        .btn-blue { background: var(--tg-accent); color: #fff; }
+        .btn-gray { background: #243447; color: #fff; }
+        #auth-msg { font-size: 12px; color: #ff5e5e; text-align: center; min-height: 14px; }
 
-        /* App Structure */
+        /* Main Workspace */
         #app { display: none; width: 100vw; height: 100vh; flex-direction: row; }
 
-        /* Discord-style Guild Icon Bar */
-        #servers-bar { width: 72px; background: #0c0e14; border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 12px; }
-        .server-icon { width: 48px; height: 48px; border-radius: 50%; background: var(--bg-panel); display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); color: var(--accent); position: relative; }
-        .server-icon:hover, .server-icon.active { border-radius: 16px; background: var(--accent); color: #000; }
-
-        /* Telegram/WhatsApp Contact Bar */
-        #sidebar { width: 300px; background: var(--bg-sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-        .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
-        .brand-title { font-size: 17px; font-weight: 800; letter-spacing: 1.5px; color: var(--accent); text-transform: uppercase; }
-        .search-add { display: flex; gap: 6px; }
-        .search-add input { flex: 1; background: var(--bg-base); border: 1px solid var(--border); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 12px; outline: none; }
-        .search-add button { background: var(--accent); border: none; color: #000; padding: 0 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        /* Left Sidebar */
+        #sidebar { width: 320px; background: var(--tg-sidebar); border-right: 1px solid var(--tg-border); display: flex; flex-direction: column; }
+        .side-top { padding: 12px 16px; display: flex; gap: 8px; align-items: center; }
+        .side-top input { flex: 1; background: var(--tg-bg); border: 1px solid #243447; border-radius: 18px; color: #fff; padding: 8px 14px; font-size: 13px; outline: none; }
+        .side-top button { width: 32px; height: 32px; border-radius: 50%; background: var(--tg-accent); border: none; color: #fff; font-size: 16px; cursor: pointer; }
         
-        #friends-list { flex: 1; overflow-y: auto; padding: 10px 8px; display: flex; flex-direction: column; gap: 4px; }
-        .friend-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; transition: 0.15s; user-select: none; }
-        .friend-row:hover { background: var(--bg-panel); }
-        .avatar-box { position: relative; width: 40px; height: 40px; }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; background: #262e3e; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 15px; color: #fff; text-transform: uppercase; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--bg-sidebar); position: absolute; bottom: -1px; right: -1px; }
-        .online { background: var(--accent); }
-        .offline { background: #555e70; }
-        .friend-info { flex: 1; min-width: 0; }
-        .friend-info h4 { font-size: 14px; font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-        .friend-info p { font-size: 11px; color: var(--text-muted); }
-
-        /* Discord User Controls Dock */
-        .user-dock { background: #11141c; padding: 10px 14px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-        .user-meta { display: flex; align-items: center; gap: 10px; }
-        .user-meta span { font-size: 13px; font-weight: 700; color: #fff; }
-
-        /* Main View */
-        #center { flex: 1; display: flex; flex-direction: column; background: var(--bg-chat); position: relative; }
+        #chats-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+        .chat-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; transition: 0.15s; border-radius: 0; }
+        .chat-item:hover { background: #1c2733; }
+        .chat-item.active { background: var(--tg-active); }
         
-        /* Top Call & Header Bar */
-        .chat-topbar { height: 60px; background: var(--bg-sidebar); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-        .active-target { display: flex; align-items: center; gap: 12px; }
-        .call-actions { display: flex; gap: 10px; }
-        .action-btn { background: var(--bg-panel); border: 1px solid var(--border); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
-        .action-btn:hover { border-color: var(--accent); color: var(--accent); }
-        .btn-live { border-color: var(--accent) !important; color: var(--accent) !important; background: rgba(46, 204, 113, 0.15) !important; }
+        .avatar { width: 44px; height: 44px; border-radius: 50%; background: #3e546a; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; color: #fff; position: relative; flex-shrink: 0; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--tg-sidebar); position: absolute; bottom: 0; right: 0; }
+        .dot.online { background: var(--tg-green); }
+        .dot.offline { background: #667280; }
+        
+        .chat-meta { flex: 1; min-width: 0; }
+        .chat-meta h4 { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-meta p { font-size: 12px; color: var(--tg-muted); margin-top: 2px; }
 
-        /* Video Screen Share Stage */
-        #stage { height: 260px; background: #000; border-bottom: 1px solid var(--border); display: none; align-items: center; justify-content: center; position: relative; }
+        /* Main Chat Window */
+        #chat-window { flex: 1; display: flex; flex-direction: column; background: var(--tg-bg); position: relative; }
+        
+        /* Telegram Header with Call/SS buttons */
+        .chat-header { height: 56px; background: var(--tg-sidebar); border-bottom: 1px solid var(--tg-border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .user-details { display: flex; align-items: center; gap: 12px; }
+        .user-details h3 { font-size: 15px; font-weight: 600; }
+        .user-details span { font-size: 12px; color: var(--tg-muted); display: block; }
+        
+        .header-actions { display: flex; gap: 10px; }
+        .header-btn { background: #202b36; border: 1px solid #2e3c4a; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.15s; }
+        .header-btn:hover { background: #273543; border-color: var(--tg-accent); color: var(--tg-accent); }
+        .header-btn.live { background: rgba(79, 174, 78, 0.2) !important; border-color: var(--tg-green) !important; color: var(--tg-green) !important; }
+
+        /* Video Stage for Screen Sharing */
+        #screen-stage { height: 280px; background: #000; border-bottom: 1px solid var(--tg-border); display: none; align-items: center; justify-content: center; position: relative; }
         video { width: 100%; height: 100%; object-fit: contain; }
 
-        /* WhatsApp/Telegram Style Chat Window */
-        #chat-stream { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        /* Chat Message Stream */
+        #messages-stream { flex: 1; overflow-y: auto; padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
         .msg-row { display: flex; width: 100%; }
         .msg-row.out { justify-content: flex-end; }
         .msg-row.in { justify-content: flex-start; }
-        .bubble { max-width: 65%; padding: 9px 14px; border-radius: 12px; font-size: 14px; line-height: 1.4; word-break: break-word; position: relative; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-        .out .bubble { background: var(--bubble-out); border-bottom-right-radius: 2px; color: #fff; }
-        .in .bubble { background: var(--bubble-in); border-bottom-left-radius: 2px; color: #eaecef; }
-        .bubble-sender { font-size: 11px; font-weight: bold; color: var(--accent); margin-bottom: 2px; }
-        .bubble-meta { align-self: flex-end; font-size: 10px; color: rgba(255, 255, 255, 0.5); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+        
+        .bubble { max-width: 60%; padding: 8px 12px; border-radius: 10px; font-size: 14px; line-height: 1.4; word-break: break-word; position: relative; }
+        .out .bubble { background: var(--tg-bubble-out); border-bottom-right-radius: 3px; color: #fff; }
+        .in .bubble { background: var(--tg-bubble-in); border-bottom-left-radius: 3px; color: #fff; }
+        .bubble .sender-title { font-size: 11px; font-weight: 700; color: var(--tg-accent); margin-bottom: 2px; }
+        .bubble-meta { font-size: 10px; color: rgba(255, 255, 255, 0.6); text-align: right; margin-top: 3px; display: flex; justify-content: flex-end; gap: 4px; }
 
-        /* Input Bar */
-        .chat-input-bar { background: var(--bg-sidebar); padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 12px; align-items: center; }
-        .chat-input-bar input { flex: 1; background: var(--bg-base); border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 12px 16px; font-size: 14px; outline: none; }
-        .chat-input-bar input:focus { border-color: var(--accent); }
-        .send-btn { width: 44px; height: 44px; border-radius: 8px; background: var(--accent); border: none; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .send-btn:hover { background: #27ae60; }
+        /* Input Field Bar */
+        .chat-input-bar { background: var(--tg-sidebar); padding: 12px 18px; border-top: 1px solid var(--tg-border); display: flex; gap: 10px; align-items: center; }
+        .chat-input-bar input { flex: 1; background: var(--tg-bg); border: 1px solid #243447; border-radius: 8px; color: #fff; padding: 10px 14px; font-size: 14px; outline: none; }
+        .chat-input-bar input:focus { border-color: var(--tg-accent); }
+        .chat-input-bar button { background: var(--tg-accent); border: none; width: 38px; height: 38px; border-radius: 8px; color: #fff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
 
-    <!-- Auth Layer -->
+    <!-- Auth -->
     <div id="auth-modal">
         <div class="auth-card">
             <h2>extorted</h2>
             <input id="auth-user" placeholder="Username" autocomplete="off">
             <input id="auth-pass" type="password" placeholder="Password">
             <div class="auth-btns">
-                <button class="btn-login" onclick="auth('login')">Log In</button>
-                <button class="btn-reg" onclick="auth('register')">Register</button>
+                <button class="btn-blue" onclick="auth('login')">Log In</button>
+                <button class="btn-gray" onclick="auth('register')">Register</button>
             </div>
             <div id="auth-msg"></div>
         </div>
     </div>
 
-    <!-- Main Workspace Layout -->
+    <!-- Main Workspace -->
     <div id="app">
-        
-        <!-- Left Server Sidebar (Discord Style) -->
-        <div id="servers-bar">
-            <div class="server-icon active" title="Global Chat">#</div>
-        </div>
-
-        <!-- Sidebar / Contact List (Telegram/WhatsApp Style) -->
+        <!-- Sidebar -->
         <div id="sidebar">
-            <div class="sidebar-header">
-                <div class="brand-title">extorted</div>
-                <div class="search-add">
-                    <input id="add-friend-input" placeholder="Add username...">
-                    <button onclick="addFriend()">+</button>
-                </div>
+            <div class="side-top">
+                <input id="add-friend-input" placeholder="Add username...">
+                <button onclick="addFriend()">+</button>
             </div>
-            
-            <div id="friends-list"></div>
-
-            <div class="user-dock">
-                <div class="user-meta">
-                    <div class="avatar-box" style="width: 32px; height: 32px;">
-                        <div class="avatar" id="my-avatar" style="font-size: 13px;">U</div>
+            <div id="chats-list">
+                <div class="chat-item active" onclick="selectChat('global')">
+                    <div class="avatar">#</div>
+                    <div class="chat-meta">
+                        <h4>Global Lobby</h4>
+                        <p>Public room</p>
                     </div>
-                    <span id="my-name">User</span>
                 </div>
             </div>
         </div>
 
-        <!-- Center Workspace -->
-        <div id="center">
-            <div class="chat-topbar">
-                <div class="active-target">
-                    <div class="avatar-box" style="width: 36px; height: 36px;">
-                        <div class="avatar" style="font-size: 14px; background: #3b4252;">#</div>
-                    </div>
+        <!-- Chat Area -->
+        <div id="chat-window">
+            <div class="chat-header">
+                <div class="user-details">
+                    <div class="avatar" id="header-avatar" style="width: 36px; height: 36px; font-size: 14px;">#</div>
                     <div>
-                        <h4 style="font-size: 15px;">#global-chat</h4>
-                        <span style="font-size: 11px; color: var(--text-muted);">Public Lobby</span>
+                        <h3 id="chat-title">Global Lobby</h3>
+                        <span id="chat-subtitle">Public group</span>
                     </div>
                 </div>
 
-                <div class="call-actions">
-                    <button id="voice-btn" class="action-btn" onclick="toggleVoice()">🎙️ Join VC</button>
-                    <button id="screen-btn" class="action-btn" onclick="toggleScreen()">🖥️ Share (720p 30+)</button>
+                <!-- Call and Screen Share Buttons in Chat Bar -->
+                <div class="header-actions">
+                    <button id="call-btn" class="header-btn" onclick="toggleCall()">📞 Call</button>
+                    <button id="screen-btn" class="header-btn" onclick="toggleScreen()">🖥️ Share (720p 30+)</button>
                 </div>
             </div>
 
             <!-- Screen Share Stage -->
-            <div id="stage">
+            <div id="screen-stage">
                 <video id="screen-display" autoplay playsinline></video>
             </div>
 
             <!-- Messages Stream -->
-            <div id="chat-stream"></div>
+            <div id="messages-stream"></div>
 
-            <!-- Input Form -->
+            <!-- Input Bar -->
             <div class="chat-input-bar">
-                <input id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter') sendChat()">
-                <button class="send-btn" onclick="sendChat()">➤</button>
+                <input id="chat-input" placeholder="Write a message..." onkeydown="if(event.key==='Enter') sendChat()">
+                <button onclick="sendChat()">➤</button>
             </div>
         </div>
     </div>
@@ -191,6 +168,7 @@
     <script>
         const socket = io();
         let myUsername = null;
+        let currentTarget = 'global';
         let peer = null;
         let localMicStream = null;
         let localScreenStream = null;
@@ -210,14 +188,12 @@
             document.getElementById('auth-msg').innerText = msg;
         }
 
-        socket.on('auth-result', (res) => showAuthErr(res.msg));
+        socket.on('auth-result', res => showAuthErr(res.msg));
 
         socket.on('login-success', (data) => {
             myUsername = data.username;
             document.getElementById('auth-modal').style.display = 'none';
             document.getElementById('app').style.display = 'flex';
-            document.getElementById('my-name').innerText = myUsername;
-            document.getElementById('my-avatar').innerText = myUsername[0].toUpperCase();
             data.friends.forEach(renderFriend);
         });
 
@@ -229,32 +205,52 @@
             }
         }
 
-        socket.on('friend-error', (err) => alert(err));
+        socket.on('friend-error', err => alert(err));
         socket.on('friend-added', renderFriend);
 
         socket.on('friend-status', ({ username, online }) => {
             const dot = document.getElementById(`dot-${username}`);
             if (dot) dot.className = `dot ${online ? 'online' : 'offline'}`;
+            if (currentTarget === username) {
+                document.getElementById('chat-subtitle').innerText = online ? 'Online' : 'Offline';
+            }
         });
 
         function renderFriend(friend) {
             if (document.getElementById(`friend-${friend.username}`)) return;
-            const list = document.getElementById('friends-list');
-            const row = document.createElement('div');
-            row.className = 'friend-row';
-            row.id = `friend-${friend.username}`;
-            row.onclick = () => callUser(friend.username);
-            row.innerHTML = `
-                <div class="avatar-box">
-                    <div class="avatar">${friend.username[0].toUpperCase()}</div>
+            const list = document.getElementById('chats-list');
+            const item = document.createElement('div');
+            item.className = 'chat-item';
+            item.id = `friend-${friend.username}`;
+            item.onclick = () => selectChat(friend.username, friend.online);
+            item.innerHTML = `
+                <div class="avatar">
+                    ${friend.username[0].toUpperCase()}
                     <div id="dot-${friend.username}" class="dot ${friend.online ? 'online' : 'offline'}"></div>
                 </div>
-                <div class="friend-info">
+                <div class="chat-meta">
                     <h4>${friend.username}</h4>
-                    <p>Click to call</p>
+                    <p>${friend.online ? 'Online' : 'Offline'}</p>
                 </div>
             `;
-            list.appendChild(row);
+            list.appendChild(item);
+        }
+
+        function selectChat(target, isOnline = true) {
+            currentTarget = target;
+            document.querySelectorAll('.chat-item').forEach(el => el.classList.remove('active'));
+            const targetEl = target === 'global' ? document.querySelector('.chat-item') : document.getElementById(`friend-${target}`);
+            if (targetEl) targetEl.classList.add('active');
+
+            if (target === 'global') {
+                document.getElementById('header-avatar').innerText = '#';
+                document.getElementById('chat-title').innerText = 'Global Lobby';
+                document.getElementById('chat-subtitle').innerText = 'Public group';
+            } else {
+                document.getElementById('header-avatar').innerText = target[0].toUpperCase();
+                document.getElementById('chat-title').innerText = target;
+                document.getElementById('chat-subtitle').innerText = isOnline ? 'Online' : 'Offline';
+            }
         }
 
         function sendChat() {
@@ -265,14 +261,14 @@
         }
 
         socket.on('chat-message', (data) => {
-            const container = document.getElementById('chat-stream');
+            const container = document.getElementById('messages-stream');
             const row = document.createElement('div');
             const isMe = data.sender === myUsername;
             row.className = `msg-row ${isMe ? 'out' : 'in'}`;
 
             row.innerHTML = `
                 <div class="bubble">
-                    ${!isMe ? `<div class="bubble-sender">${data.sender}</div>` : ''}
+                    ${!isMe ? `<div class="sender-title">${data.sender}</div>` : ''}
                     <div>${data.text}</div>
                     <div class="bubble-meta">
                         ${data.time} ${isMe ? '✓✓' : ''}
@@ -283,7 +279,7 @@
             container.scrollTop = container.scrollHeight;
         });
 
-        function setupPeer(targetUser) {
+        function getPeer(target) {
             if (peer) return peer;
             peer = new RTCPeerConnection(iceConfig);
 
@@ -291,7 +287,7 @@
                 if (e.track.kind === 'audio') {
                     document.getElementById('remote-audio').srcObject = e.streams[0];
                 } else if (e.track.kind === 'video') {
-                    const stage = document.getElementById('stage');
+                    const stage = document.getElementById('screen-stage');
                     const v = document.getElementById('screen-display');
                     v.srcObject = e.streams[0];
                     stage.style.display = 'flex';
@@ -301,85 +297,90 @@
 
             peer.onicecandidate = (e) => {
                 if (e.candidate) {
-                    socket.emit('signal', { targetUser, signal: { type: 'candidate', candidate: e.candidate } });
+                    socket.emit('signal', { targetUser: target, signal: { type: 'candidate', candidate: e.candidate } });
                 }
             };
 
             return peer;
         }
 
-        async function callUser(target) {
-            const p = setupPeer(target);
-            await toggleVoice();
-            const offer = await p.createOffer();
-            await p.setLocalDescription(offer);
-            socket.emit('signal', { targetUser: target, signal: { type: 'offer', sdp: offer } });
-        }
+        async function toggleCall() {
+            if (currentTarget === 'global') return alert('Please select a friend from the list to call.');
+            const btn = document.getElementById('call-btn');
 
-        async function toggleVoice() {
-            const btn = document.getElementById('voice-btn');
             if (!localMicStream) {
                 try {
                     localMicStream = await navigator.mediaDevices.getUserMedia({
                         audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, sampleRate: 48000 },
                         video: false
                     });
-                    if (peer) {
-                        localMicStream.getTracks().forEach(t => peer.addTrack(t, localMicStream));
-                    }
-                    btn.classList.add('btn-live');
-                    btn.innerText = '🎙️ Mic Active';
+
+                    const p = getPeer(currentTarget);
+                    localMicStream.getTracks().forEach(t => p.addTrack(t, localMicStream));
+
+                    const offer = await p.createOffer();
+                    await p.setLocalDescription(offer);
+                    socket.emit('signal', { targetUser: currentTarget, signal: { type: 'offer', sdp: offer } });
+
+                    btn.classList.add('live');
+                    btn.innerText = '📞 End Call';
                 } catch (e) {
                     alert('Mic access error: ' + e.message);
                 }
             } else {
                 localMicStream.getTracks().forEach(t => t.stop());
                 localMicStream = null;
-                btn.classList.remove('btn-live');
-                btn.innerText = '🎙️ Join VC';
+                btn.classList.remove('live');
+                btn.innerText = '📞 Call';
             }
         }
 
         async function toggleScreen() {
+            if (currentTarget === 'global') return alert('Please select a friend from the list to share your screen with.');
             const btn = document.getElementById('screen-btn');
-            const stage = document.getElementById('stage');
+            const stage = document.getElementById('screen-stage');
+
             if (!localScreenStream) {
                 try {
                     localScreenStream = await navigator.mediaDevices.getDisplayMedia({
                         video: { width: { min: 1280, ideal: 1920 }, height: { min: 720, ideal: 1080 }, frameRate: { min: 30, ideal: 30, max: 60 } },
                         audio: true
                     });
+
                     const video = document.getElementById('screen-display');
                     video.srcObject = localScreenStream;
                     stage.style.display = 'flex';
 
-                    if (peer) {
-                        localScreenStream.getTracks().forEach(t => peer.addTrack(t, localScreenStream));
-                    }
+                    const p = getPeer(currentTarget);
+                    localScreenStream.getTracks().forEach(t => p.addTrack(t, localScreenStream));
+
+                    const offer = await p.createOffer();
+                    await p.setLocalDescription(offer);
+                    socket.emit('signal', { targetUser: currentTarget, signal: { type: 'offer', sdp: offer } });
 
                     localScreenStream.getVideoTracks()[0].onended = () => {
                         localScreenStream = null;
                         stage.style.display = 'none';
-                        btn.classList.remove('btn-live');
+                        btn.classList.remove('live');
                         btn.innerText = '🖥️ Share (720p 30+)';
                     };
 
-                    btn.classList.add('btn-live');
+                    btn.classList.add('live');
                     btn.innerText = '🖥️ Stop Share';
                 } catch (e) {
-                    console.log('Screen cancelled: ', e);
+                    console.log('Screen cancelled:', e);
                 }
             } else {
                 localScreenStream.getTracks().forEach(t => t.stop());
                 localScreenStream = null;
                 stage.style.display = 'none';
-                btn.classList.remove('btn-live');
+                btn.classList.remove('live');
                 btn.innerText = '🖥️ Share (720p 30+)';
             }
         }
 
         socket.on('signal', async ({ sender, signal }) => {
-            const p = setupPeer(sender);
+            const p = getPeer(sender);
             if (signal.type === 'offer') {
                 await p.setRemoteDescription(new RTCSessionDescription(signal.sdp));
                 const answer = await p.createAnswer();
@@ -393,4 +394,4 @@
         });
     </script>
 </body>
-</html>    
+</html>
